@@ -7,8 +7,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define TINYGLTF_IMPLEMENTATION
 #include "..\common\gltf_loader.h"
-//#include "C:\Users\ricca\OneDrive\Documenti\GitHub\CGCourse2024\build2\build2\stb_image.h"
-//#include "C:\Users\ricca\OneDrive\Documenti\GitHub\CGCourse2024\build2\build2\stb_image_write.h"
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -41,9 +40,6 @@
 
 
 
-//segnarsi quali texture unit le sto usando per fare cosa
-
-
 int width, height;
 
 trackball tb[2];
@@ -56,7 +52,6 @@ int curr_proj;
 /* view matrix */
 std::vector<glm::mat4> views;
 int curr_view;
-glm::mat4 initial_view;
 
 
 renderable r_quad, r_cube, r_cube_skybox;
@@ -194,7 +189,6 @@ void disegna_full_screen_quad();
 void disegna_texture_fsq(GLint tex_id);
 void blur_texture(GLint tex_id);
 glm::mat4 crea_light_matrix(glm::mat4& view, float distance_light);
-glm::mat4 copia_matrice(glm::mat4 matrice);
 void processInput(GLFWwindow* window);
 
 
@@ -250,26 +244,11 @@ void processInput(GLFWwindow* window);
 		gltf_loader taxi_gltfL, cameraman_gltfL, tree_gltfL, lampione_gltfL;
 
 		
-		//std::string path = "C:\\Users\\ricca\\OneDrive\\Documenti\\GitHub\\CGCourse2024\\src\\code_12_onthefly_coordinates\\textures\\envmap\\";
-		
 		std::string path = "skybox/";
 		skybox.load_cubemap(path + "right.jpg", path + "left.jpg",
 			path + "top.jpg", path + "bottom.jpg",
 			path + "front.jpg", path + "back.jpg", 11);
-		
-		
-		/*skybox.load_cubemap(path + "posx.jpg", path + "negx.jpg",
-			path + "posy.jpg", path + "negy.jpg",
-			path + "posz.jpg", path + "negz.jpg", 9); //skybox nella texture unit 9
-		*/
-		// load a gltf scene into a vector of objects of type renderable "obj"
-		// alo return a box containing the whole scene
-		//"C:\\Users\\ricca\\OneDrive\\Desktop\\Berlina.glb"
-		//"..\\code_10_phong_shading\\ciabatta.glb"
-		//"C:\\Users\\ricca\\OneDrive\\Desktop\\alieno_cameraman.glb"
-		//"C:\\Users\\ricca\\OneDrive\\Desktop\\Taxi.glb"
-		//"modelli/low_poly_psx_street_lamp.glb"
-		//"C:\\Users\\ricca\\OneDrive\\Desktop\\tree.glb"
+	
 
 		cameraman_gltfL.load_to_renderable("modelli/cameraman.glb", cameraman_obj, cameraman_bbox);
 		tree_gltfL.load_to_renderable("modelli/low_poly_pine_tree.glb", tree_obj, tree_bbox);
@@ -342,7 +321,7 @@ void processInput(GLFWwindow* window);
 		depth_shader.create_program("shaders/depthmap.vert", "shaders/depthmap.frag");
 		full_screen_quad_shader.create_program("shaders/fsq.vert", "shaders/fsq.frag");
 		flat_shader.create_program("shaders/flat.vert", "shaders/flat.frag");
-		//Da aggiungere blur.frag 
+		
 		blur_shader.create_program("shaders/fsq.vert", "shaders/blur.frag");
 		/* use the program shader "program_shader" */
 		glUseProgram(basic_shader.program);
@@ -367,11 +346,11 @@ void processInput(GLFWwindow* window);
 		setup_camera_vectors();
 		//view = glm::lookAt(glm::vec3(0, 1.f, 1.5), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0, 1.f, 0.f));
 		views[0] = glm::lookAt(camera_center, camera_center + camera_front, camera_up);
-		initial_view = copia_matrice(views[0]);
+		
 		initial_camera_center = camera_center;
 		initial_camera_front = camera_front;
 		initial_camera_up = camera_up;
-		//glUniformMatrix4fv(basic_shader["uView"], 1, GL_FALSE, &view[0][0]);
+		
 		
 		glUniform3f(basic_shader["uLightColor"], 0.8f, 0.8f, 0.8f);
 		glUniform1f(depth_shader["uPlaneApprox"], k_plane_approx);
@@ -427,7 +406,7 @@ void processInput(GLFWwindow* window);
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 			gui_setup();
-			//check_gl_errors(__LINE__, __FILE__);
+			
 
 			//delta_time per modulare velocità in base al frameRate
 			float current_time = glfwGetTime();
@@ -440,7 +419,7 @@ void processInput(GLFWwindow* window);
 
 			fanali_proj = glm::frustum(-0.01f, 0.01f, -0.005f, 0.005f, near_fanali, far_fanali);
 			lampioni_proj = glm::frustum(-0.01f, 0.01f, -0.005f, 0.005f, near_lampioni, far_lampioni);
-			//lampioni_proj = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, near_lampioni, far_lampioni);
+			
 
 			glUniformMatrix4fv(basic_shader["uFanaliProj"], 1, GL_FALSE, &fanali_proj[0][0]);
 			glUniformMatrix4fv(basic_shader["uView"], 1, GL_FALSE, &views[curr_view][0][0]);
@@ -458,7 +437,7 @@ void processInput(GLFWwindow* window);
 			glUseProgram(depth_shader.program);
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			glViewport(0, 0, shadow_map_size_x, shadow_map_size_y);
-			//forse da cambiare questi parametri
+			
 			glm::vec4 curr_Ldir = glm::vec4(r.sunlight_direction(),0.f);
 			
 			if (adjustable_distance_light) {
@@ -466,7 +445,7 @@ void processInput(GLFWwindow* window);
 				if(cos >0.7f)
 					distance_light = initial_distance_light * (1 / cos);
 			}
-			//LDir_view = glm::lookAt(glm::vec3(0.f, distance_light, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, -1.f)) * inverse(tb[0].matrix());
+			
 			
 			LDir_view = glm::lookAt(r.sunlight_direction() * distance_light, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, -1.f));
 			if (curr_view == 0) {
@@ -474,16 +453,12 @@ void processInput(GLFWwindow* window);
 			}
 			
 
-			//glUniformMatrix4fv(depth_shader["uView"], 1, GL_FALSE, &views[curr_view][0][0]);
-			//glUniformMatrix4fv(depth_shader["uProj"], 1, GL_FALSE, &proj[curr_proj][0][0]);
+			
 			
 			LDir_light_matrix = crea_light_matrix(LDir_view, distance_light);
 			glUniformMatrix4fv(depth_shader["uLightMatrix"], 1, GL_FALSE, &LDir_light_matrix[0][0]);
 			
 			disegna_scena(depth_shader, r,false);
-
-			//variance map
-			//blur_texture(shadow_map_fbo.id_fbo);
 
 
 			//disegno scena per shadow map lampioni
@@ -547,7 +522,6 @@ void processInput(GLFWwindow* window);
 			
 			if (shadow_map_in_basso_a_sx) {
 				glViewport(0, 0, 200, 200);
-				//glClearColor(0.8, 0.8, 0.8,1.f);
 				glDisable(GL_DEPTH_TEST);
 				disegna_texture_fsq(shadow_map_fbo.id_tex);
 				glEnable(GL_DEPTH_TEST);
@@ -555,7 +529,6 @@ void processInput(GLFWwindow* window);
 			}
 			if (lampione_shadow_map_in_basso_a_sx != -1) {
 				glViewport(0, 0, 200, 200);
-				//glClearColor(0.8, 0.8, 0.8,1.f);
 				glDisable(GL_DEPTH_TEST);
 				disegna_texture_fsq(shadow_map_lampioni_fbo[lampione_shadow_map_in_basso_a_sx].id_tex);
 				glEnable(GL_DEPTH_TEST);
@@ -596,17 +569,6 @@ void processInput(GLFWwindow* window);
 		
 		glUniformMatrix4fv(sh["uModel"], 1, GL_FALSE, &stack.m()[0][0]);
 
-		/*
-		glUniform3f(basic_shader["uColor"], -1.f, 0.6f, 0.f);
-		fram.bind();
-		glDrawArrays(GL_LINES, 0, 6);
-
-		glColor3f(0, 0, 1);
-		glBegin(GL_LINES);
-		glVertex3f(0, 0, 0);
-		glVertex3f(r.sunlight_direction().x, r.sunlight_direction().y, r.sunlight_direction().z);
-		glEnd();
-		*/
 
 		if (sh.has_uniform("uSunlightDir")) glUniform3f(sh["uSunlightDir"], r.sunlight_direction().x, r.sunlight_direction().y, r.sunlight_direction().z);
 
@@ -633,7 +595,7 @@ void processInput(GLFWwindow* window);
 		
 		r_terrain.bind();
 
-		//glDrawArrays(GL_POINTS, 0, r_terrain.vn);
+		
 		glDrawElements(r_terrain().mode, r_terrain().count, r_terrain().itype, NULL);
 		glDepthRange(0.0, 1);
 		if (sh.has_uniform("uObject")) glUniform1i(sh["uObject"], 2);
@@ -642,12 +604,11 @@ void processInput(GLFWwindow* window);
 		
 		
 		//DISEGNO TRACK
-		//glEnable(GL_POLYGON_OFFSET_FILL);
-		//glPolygonOffset(2.0,3.0);
+		
 		r_track.bind();
 		if (sh.has_uniform("uObject")) glUniform1i(sh["uObject"], 0);
 		glPointSize(3.0);
-		//glUniform3f(basic_shader["uColor"], 0.2f, 0.3f, 0.2f);
+		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, track_texture_id);
 		if (sh.has_uniform("uTrackTexture")) glUniform1i(sh["uTrackTexture"], 0);
@@ -658,7 +619,7 @@ void processInput(GLFWwindow* window);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, r_track.vn);
 		glPointSize(1.0);
 		if (sh.has_uniform("uObject")) glUniform1i(sh["uObject"], 2);
-		//glDisable(GL_POLYGON_OFFSET_FILL);
+		
 		
 		
 		
@@ -674,18 +635,14 @@ void processInput(GLFWwindow* window);
 
 			stack.mult(r.cars()[ic].frame);
 			pos_macchine[ic] = stack.m() * glm::vec4(0.f, 0.f, 0.f, 1.f);
-			//glUniform3f(basic_shader["uColor"], -1.f, 0.6f, 0.f);
-			//glUniformMatrix4fv(sh["uModel"], 1, GL_FALSE, &stack.m()[0][0]);
+			
 			glUniformMatrix4fv(sh["uModel"], 1, GL_FALSE, &glm::translate(glm::mat4(1.f), glm::vec3(pos_macchine[ic]))[0][0]);
 			/*Disegno frame macchine*/
-			/*if (ic == 5) {
-				fram.bind();
-				glDrawArrays(GL_LINES, 0, 6);
-			}*/
+			
 			if(sh.has_uniform("uObject")) glUniform1i(sh["uObject"], 3);
 			if (sh.has_uniform("uColor")) glUniform3f(sh["uColor"], -0.7, 0.7, 0.3);
 			if (sh.has_uniform("uModelTexture")) glUniform1i(sh["uModelTexture"], 0);
-			//glUniform1i(basic_shader["uTaxiTexture"], 0);
+			
 			
 			/*aggiusto posizione e dimensione macchine*/
 			
@@ -702,9 +659,8 @@ void processInput(GLFWwindow* window);
 
 				glm::vec3 fanali_center = glm::vec3(stack.m() * glm::vec4(fanali_pos_x, fanali_pos_y, fanali_pos_z, 1.0));
 				glm::vec3 fanali_target = glm::vec3(stack.m() * glm::vec4(fanali_pos_x + inclinazione_fanali_x,fanali_pos_y + inclinazione_fanali_y,fanali_pos_z + inclinazione_fanali_z,1.0));
-				fanali_view[ic] = glm::lookAt(fanali_center, /*fanali_center +*/ fanali_target, glm::vec3(0.f, 1.f, 0.f));
-				//fanali_view[ic] = glm::lookAt(fanali_center, fanali_center + glm::vec3(0.f, -1.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
-				//if (curr_view == 0) fanali_view[ic] = fanali_view[ic] * inverse(tb[0].matrix());
+				fanali_view[ic] = glm::lookAt(fanali_center, fanali_target, glm::vec3(0.f, 1.f, 0.f));
+				
 				glUniformMatrix4fv(sh["uFanaliView"], 10, GL_FALSE, &fanali_view[0][0][0]);
 				if (disegna_frustum_fanali) {
 					glm::mat4 fanali_mat = fanali_proj * fanali_view[ic];
@@ -731,10 +687,6 @@ void processInput(GLFWwindow* window);
 			cameramen_views[ic] = stack.m();
 
 			glUniformMatrix4fv(sh["uModel"], 1, GL_FALSE, &stack.m()[0][0]);
-			//glUniform3f(basic_shader["uColor"], -1.f, 0.6f, 0.f);
-			//fram.bind();
-			//glDrawArrays(GL_LINES, 0, 6);
-			//glUniform3f(basic_shader["uColor"], -0.5, 0.5, 0.5);
 			if (sh.has_uniform("uObject")) glUniform1i(sh["uObject"], 4);
 			
 			model_bind(stack, cameraman_scale, cameraman_obj, cameraman_bbox, 0, sh, glm::rotate(glm::mat4(1.f),glm::radians(180.f),glm::vec3(0.f,0.f,1.f)));
@@ -755,20 +707,14 @@ void processInput(GLFWwindow* window);
 			stack.push();
 			stack.mult(glm::translate(glm::mat4(1.f), r.trees()[it].pos + glm::vec3(0.f, 1.f, 0.f)));
 			stack.mult(glm::scale(glm::mat4(1.f), glm::vec3(7.f, 7.f, 7.f)));
-			//glUniform3f(basic_shader["uColor"], -0.f, 1.f, 0.f);
 			
-			//glUniform1i(basic_shader["uTreeTexture"], 4);
 			model_bind(stack, tree_scale, tree_obj, tree_bbox, 0, sh,glm::mat4(1.f));
 			stack.pop();
 		}
 		stack.pop();
 		if (sh.has_uniform("uObject")) glUniform1i(sh["uObject"], 2);
 		glUniformMatrix4fv(sh["uModel"], 1, GL_FALSE, &stack.m()[0][0]);
-		/*
-		r_trees.bind();
 		
-		glDrawArrays(GL_LINES, 0, r_trees.vn);
-		*/
 		//DISEGNO LAMPIONI
 		r_lamps.bind();
 		//Sono 10 lampioni
@@ -785,7 +731,7 @@ void processInput(GLFWwindow* window);
 			
 			stack.push();
 
-			//condizione da rivedere
+			
 			if(il<5) stack.mult(glm::translate(glm::mat4(1.f), glm::vec3(pos_luce_lampione_x, pos_luce_lampione_y, pos_luce_lampione_z)));
 			else stack.mult(glm::translate(glm::mat4(1.f), glm::vec3(-pos_luce_lampione_x*2.f, pos_luce_lampione_y, pos_luce_lampione_z)));
 			
@@ -799,7 +745,6 @@ void processInput(GLFWwindow* window);
 			if (backface_culling) {
 				
 				for (int i = 0; i < 10; ++i) {
-					//non ha senso perché non memorizza un indice diverso per ogni macchina, avrebbe senso se il for fosse fatto nelle macchine
 					
 					glm::vec3 lamp_macchina = glm::vec3(pos_macchine[i]) - lamp_light_point[il];
 					if (glm::dot(lamp_macchina, lamp_macchina) < raggio_lampioni ) {
@@ -812,7 +757,7 @@ void processInput(GLFWwindow* window);
 			
 			
 			if (sh.has_uniform("uModelTexture")) glUniform1i(sh["uModelTexture"], 0);
-			//originale era il<9 || il==1
+			
 			if (il < 5) model_bind(stack, lamp_scale, lampione_obj, lampione_bbox, 0, sh,flip );
 			else model_bind(stack, lamp_scale, lampione_obj, lampione_bbox, 0, sh, glm::mat4(1.f));
 			stack.pop();
@@ -842,7 +787,7 @@ void processInput(GLFWwindow* window);
 		glm::vec3 cameramen_view_direction = glm::normalize(glm::vec3(-cameramen_views[curr_cameraman][2]));
 		glm::vec3 target = eye + cameramen_view_direction;
 		views[curr_view] = glm::lookAt(eye + adjust_eye, target, camera_up);
-		//views[curr_view] = glm::translate(glm::mat4(1.f),glm::vec3(0.f,-0.15f,0.3f))*glm::inverse(cameramen_views[curr_cameraman]);
+		
 	}
 
 
@@ -915,17 +860,10 @@ void processInput(GLFWwindow* window);
 
 			glm::vec3 normale = normalize(glm::cross(p02, p01));
 
-			//normali_triangoli.push_back(normale);
-
-			//idea: buffer_id mi restituisce l'indice del vertice, per ogni vertice sommo i valori della normale
-			//e poi faccio la media delle normali
+			
 			
 			for (int iv = 0; iv < 3; ++iv) {
-				//3 * buffer_id[it * 3+iv]
-				/*
-				glm::vec3 pos10 = (p[(iv + 1) % 3] - p[iv]);
-				glm::vec3 pos20 = (p[(iv + 2) % 3] - p[iv]);
-				*/
+		
 
 				terrain_normals_coord[3 * buffer_id[it * 3 + iv]] += normale.x;
 				terrain_normals_coord[3 * buffer_id[it * 3 + iv] + 1] += normale.y;
@@ -953,7 +891,7 @@ void processInput(GLFWwindow* window);
 			track_text_coord[i + 3] = j;
 			j = (j + 0.025f);
 			
-			//j = j + 0.0625f; // 1/16=0.0625
+			
 		}
 	}
 	void crea_texture_coordinates_terreno(renderable& terreno, const race& r) {
@@ -1099,29 +1037,20 @@ void processInput(GLFWwindow* window);
 		const float cameraSpeed = camera_speed * delta_f;
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 			camera_center += cameraSpeed * camera_front_dir;
-			//come_back -= cameraSpeed * camera_front_dir;
+			
 		}
 			//camera_center += cameraSpeed * camera_front;
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 			camera_center -= cameraSpeed * camera_front_dir;
-			//come_back += cameraSpeed * camera_front_dir;
 		}
-			
-			
-			//camera_center -= cameraSpeed * camera_front;
+
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 			camera_center -= glm::normalize(glm::cross(camera_front_dir, camera_up)) * cameraSpeed;
-			//come_back += glm::normalize(glm::cross(camera_front_dir, camera_up)) * cameraSpeed;
 		}
-			
-			//camera_center -= glm::normalize(glm::cross(camera_front, camera_up)) * cameraSpeed;
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			camera_center += glm::normalize(glm::cross(camera_front_dir, camera_up)) * cameraSpeed;
-			//come_back -= glm::normalize(glm::cross(camera_front_dir, camera_up)) * cameraSpeed;
+
 		}
-			
-			//camera_center += glm::normalize(glm::cross(camera_front, camera_up)) * cameraSpeed;
-			
 	}
 
 	/* callback function called when a mouse button is pressed */
@@ -1160,22 +1089,8 @@ void processInput(GLFWwindow* window);
 		
 		if (action == GLFW_PRESS) {
 			
-			//glm::vec3 camera_front_dir = -glm::vec3(views[0][0][2]);
+			
 			switch (key) {
-			/*
-			case GLFW_KEY_W:
-				camera_center += camera_front_dir * camera_speed * delta_f;
-				break;
-			case GLFW_KEY_S:
-				camera_center -= camera_front_dir * camera_speed * delta_f;
-				break;
-			case GLFW_KEY_D:
-				camera_center += glm::normalize(glm::cross(camera_front_dir, camera_up)) * camera_speed * delta_f;
-				break;
-			case GLFW_KEY_A:
-				camera_center -= glm::normalize(glm::cross(camera_front_dir, camera_up)) * camera_speed * delta_f;
-				break;
-			*/
 			case GLFW_KEY_C:
 				if(!first_person_mode)
 					switch_to_cameraman();
@@ -1184,13 +1099,10 @@ void processInput(GLFWwindow* window);
 				if (curr_view == 0) {
 					if (first_person_mode) {
 						curr_proj = 0;
-						//views[0] = initial_view;
 						camera_front = initial_camera_front;
 						camera_up = initial_camera_up;
 						camera_center = initial_camera_center;
-						//views[0] = copia_matrice(initial_view); a quanto pare non funziona
-						//camera_center += come_back;
-						//come_back = glm::vec3(0.f, 0.f, 0.f);
+						
 					}
 					else curr_proj = 2;
 
@@ -1249,7 +1161,6 @@ void processInput(GLFWwindow* window);
 		}
 		if (ImGui::BeginMenu("LightFrustum parametri")) {
 			if (ImGui::SliderFloat("distance_light", &initial_distance_light, 0.f, 10.f)) distance_light = initial_distance_light;
-			//if(ImGui::SliderInt())
 			if (ImGui::SliderFloat("bias", &depth_bias, 0.f, 0.3f));
 			if (ImGui::SliderFloat("light near", &light_near, -1.f, 0.f));
 			if (ImGui::SliderFloat("adjustable_distance_light_tuning", &adjustable_distance_light_tuning, 0.01f, 10.f));
@@ -1291,45 +1202,17 @@ void processInput(GLFWwindow* window);
 				if (ImGui::SliderFloat("posizione ombra z", &lamp_shadow_z, -30.f, 30.f));
 				if (ImGui::Selectable("mostra frustum lampioni", mostra_frustum_lampioni == true)) mostra_frustum_lampioni = true;
 				if (ImGui::Selectable("nascondi frustum lampioni", mostra_frustum_lampioni == false)) mostra_frustum_lampioni = false;
-				//lampione_shadow_map_in_basso_a_sx
 				if (ImGui::SliderFloat("bias shadow map", &lamp_bias, -0.5f, 0.3f));
 				if (ImGui::Button("mostra shadow map lampione 1 in basso a sx")) {
 					lampione_shadow_map_in_basso_a_sx += 1;
 					if (lampione_shadow_map_in_basso_a_sx == 10) lampione_shadow_map_in_basso_a_sx = -1;
 				}
-				//if (ImGui::Selectable("nascondi shadow map lampione 1 in basso a sx", lampione_shadow_map_in_basso_a_sx == false)) lampione_shadow_map_in_basso_a_sx = false;
 				ImGui::EndMenu();
 			}
 
 			
 			ImGui::EndMenu();
 		}
-		/*
-		
-
-		if (ImGui::BeginMenu("Texture mode"))
-		{
-			if (ImGui::BeginMenu("Choose Images")) {
-				ImGui::Text("Set "); ImGui::SameLine(); ImGui::InputText("as diffuse_map", diffuse_map_name, 65536);
-				ImGui::Text("Set "); ImGui::SameLine(); ImGui::InputText("as displacement map", displacement_map_name, 65536);
-				ImGui::Text("Set "); ImGui::SameLine(); ImGui::InputText("as normal map", normal_map_name, 65536);
-
-				if (ImGui::Button("Set these images as textures")) {
-					load_textures();
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenu();
-		}
-		*/
 		ImGui::EndMainMenuBar();
 	}
-	glm::mat4 copia_matrice(glm::mat4 matrice) {
-		glm::mat4 ris = glm::mat4(1.f);
-		for (int i = 0; i < 4; ++i) {
-			for (int j = 0; j < 4; ++j) {
-				ris[i][j] = matrice[i][j];
-			}
-		}
-		return ris;
-	}
+	
