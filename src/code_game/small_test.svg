@@ -7,7 +7,7 @@
    viewBox="0 0 26.458333 26.458333"
    version="1.1"
    id="svg5"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    sodipodi:docname="small_test.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -25,19 +25,27 @@
      showgrid="true"
      inkscape:zoom="8"
      inkscape:cx="66.8125"
-     inkscape:cy="47.1875"
+     inkscape:cy="39.4375"
      inkscape:window-width="1920"
-     inkscape:window-height="1009"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      units="px"
      scale-x="1"
-     inkscape:snap-global="false">
+     inkscape:snap-global="false"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
-       id="grid23106" />
+       id="grid23106"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="true" />
   </sodipodi:namedview>
   <defs
      id="defs2" />
@@ -45,20 +53,6 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp"
-       width="0.4054915"
-       height="0.4054915"
-       x="2.2617073"
-       y="14.003812" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4"
-       width="0.4054915"
-       height="0.4054915"
-       x="3.1977909"
-       y="13.722117" />
     <rect
        style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="lamp-4-1"
@@ -96,55 +90,6 @@
        y="10.529416" />
     <rect
        style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-18"
-       width="0.4054915"
-       height="0.4054915"
-       x="8.2060432"
-       y="9.9258356" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-18-6"
-       width="0.4054915"
-       height="0.4054915"
-       x="8.6442604"
-       y="9.2395725" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-18-3"
-       width="0.4054915"
-       height="0.4054915"
-       x="7.0815639"
-       y="9.0328665" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-18-4"
-       width="0.4054915"
-       height="0.4054915"
-       x="7.5445852"
-       y="8.2721891" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-18-8"
-       width="0.4054915"
-       height="0.4054915"
-       x="8.8923054"
-       y="8.6277227" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-8"
-       width="0.4054915"
-       height="0.4054915"
-       x="1.4544256"
-       y="12.907464" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="lamp-4-11"
-       width="0.4054915"
-       height="0.4054915"
-       x="2.318233"
-       y="12.580747" />
-    <rect
-       style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="lamp-4-84"
        width="0.4054915"
        height="0.4054915"
@@ -156,7 +101,8 @@
        width="0.4054915"
        height="0.4054915"
        x="4.1380744"
-       y="11.703505" />
+       y="11.703505"
+       inkscape:label="lamp-4-73" />
     <rect
        style="fill:#ffff00;stroke:none;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="lamp-4-71"

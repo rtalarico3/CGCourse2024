@@ -17,8 +17,12 @@ struct game_to_renderable {
 		std::vector<float> buffer_pos;
 		buffer_pos.resize(r.t().curbs[0].size() * 2 * 3);
 		for (unsigned int i = 0; i < r.t().curbs[0].size();++i) {
-			ct(&buffer_pos[(2 * i  ) * 3], r.t().curbs[0][i % (r.t().curbs[0].size())]);
-			ct(&buffer_pos[(2 * i+1) * 3], r.t().curbs[1][i % (r.t().curbs[1].size())]);
+			glm::vec3 src = r.t().curbs[0][i % (r.t().curbs[0].size())];
+			src.y = r.ter().y(src.x, src.z)+0.03f;
+			ct(&buffer_pos[(2 * i  ) * 3], src);
+			src = r.t().curbs[1][i % (r.t().curbs[1].size())];
+			src.y = r.ter().y(src.x, src.z)+0.05f;
+			ct(&buffer_pos[(2 * i+1) * 3], src);
 		}
 
 		r_t.add_vertex_attribute<float>(&buffer_pos[0], static_cast<unsigned int>(buffer_pos.size()), 0, 3);
@@ -75,6 +79,11 @@ struct game_to_renderable {
 
 		r_hf.add_vertex_attribute<float>(&hf3d[0], X * Z * 3, 0, 3);
 		r_hf.add_indices<unsigned int>(&buffer_id[0], static_cast<unsigned int>(buffer_id.size()), GL_TRIANGLES);
+		
+		
+	
+	
+	
 	}
 
 };
